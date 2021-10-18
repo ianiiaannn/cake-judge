@@ -1,0 +1,27 @@
+{
+  "name": "cake-judge",
+  "version": "1.0.0",
+  "description": "Simple judge system with javascript",
+  "main": "app.mjs",
+  "scripts": {
+    "test": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianiiaannn/cake-judge.git"
+  },
+  "author": "ianiiaannn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ianiiaannn/cake-judge/issues"
+  },
+  "homepage": "https://github.com/ianiiaannn/cake-judge#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.1",
+    "eslint-config-google": "^0.14.0"
+  }
+}
