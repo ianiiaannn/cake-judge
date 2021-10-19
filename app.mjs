@@ -1,14 +1,17 @@
 const PORT = 8080;
 
 import express from 'express';
-const app=express();
 import http from 'http';
+
+
+const app=express();
 http.createServer(app);
-app.set('view_engine', 'ejs');
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 
 app.get('/', (req, res)=>{
-  res.send('hi');
+  res.render('index');
 });
 
 
