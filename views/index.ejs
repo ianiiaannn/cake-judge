@@ -12,14 +12,40 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-10 align-content-center">
-          <h1>Cake judge</h1><br>
+        <div class="col align-content-center">
+          <h1><a href="/">Cake judge</a></h1><br>
           <h2>A piece of cake, isn't it?</h2>
         </div>
       </div>
-      <div class="row">
-
+      <div class="d-flex">
+          <a class="me-auto p-2">Problems</a>
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button>
+            <div class="dropdown-menu">
+              <form action="/submitLogin" method="post">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                  <label for="passwd">Password</label>
+                  <input type="password" class="form-control" id="passwd" name="passwd" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+              </form>
+            </div>
+          </div>
+          <button class="btn btn-secondary">Register</button>
       </div>
     </div>
+    <form id="dbTest" action="/dbTestSubmit" method="POST">
+      <input id="DB" name="DB">
+      <button type="submit">submit</button>
+    </form>
+    <form id="cppTest" action="/cppTestSubmit" method="POST">
+      <textarea id="cpp" name="cpp" ></textarea>
+      <button type="submit">submit</button>
+    </form>
+    <%= a %>
   </body>
 </html>
