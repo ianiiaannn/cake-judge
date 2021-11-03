@@ -63,11 +63,11 @@ app.post('/dbTestSubmit', (req, res)=>{
   // eslint-disable-next-line require-jsdoc
   async function dbLookup() {
     try {
-      conn=await pool.getConnection();
-      message= await conn.query(req.body.DB);
+      conn = await pool.getConnection();
+      message = await conn.query(req.body.DB);
     } catch (err) {
       console.log(err);
-      message=err;
+      message = err;
     } finally {
       if (conn) conn.end();
       res.render('index', {a: JSON.stringify(message)});
@@ -82,8 +82,8 @@ app.post('/cppTestSubmit', (req, res)=>{
     code: req.body.cpp,
     type: 'cpp',
     testData: [{
-      input: 'world',
-      output: 'hello, world',
+      input: 'world\nnode',
+      output: ['hello, world', 'hello, node'],
       memLimit: '10000',
       timeout: '10000',
     }],
@@ -94,10 +94,6 @@ app.post('/cppTestSubmit', (req, res)=>{
 });
 
 dbTest();
-const testWorker = new workerThreads.Worker(__dirname+'/worker.mjs');
-testWorker.on('message', (message)=>{
-  console.log(message);
-});
 app.listen(PORT, ()=>{
   console.log('server stated on port '+PORT+'.');
 });
