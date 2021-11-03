@@ -1,9 +1,7 @@
 import workerThreads from 'worker_threads';
 import fs from 'fs';
 import childProcess from 'child_process';
-
-
-console.log('a');
+import os from 'os';
 
 // eslint-disable-next-line require-jsdoc
 async function testCpp(input, questions) {
@@ -21,25 +19,32 @@ async function testCpp(input, questions) {
       questions.forEach(async (element) =>{
         const resultByLine=[];
         const runner = childProcess.spawnSync('/tmp/test.run', {
-          input: element.input,
+          input: element.input+os.EOL,
           encoding: 'utf-8',
+          timeout: element.timeout*1000,
         });
         let i=0;
         let output=runner.output[1];
-        while (output) {
-          resultByLine[i]=output.substr(0, output.indexOf('\n'));
-          output=output.substr(output.indexOf('\n')+1, output.length);
-          i++;
-        }
-        i=0;
+        if (output.indexOf('\n')!=-1) {
+          while (output) {
+            resultByLine[i]=output.substr(0, output.indexOf('\n'));
+            output=output.substr(output.indexOf('\n')+1, output.length);
+            i++;
+          }
+        } else resultByLine[0]=output;
         let pass=true;
-        for (let i=0; i<=element.output.length-1; i++) {
-          console.log(element.output);
-          resultByLine[i].trim();
-          if (element.output[i] != resultByLine[i]) pass=false;
+        for (i=0; i<=resultByLine.length-1; i++) {
+          try {
+            resultByLine[i].trim();
+            if (element.output[i] != resultByLine[i]) pass=false;
+          } catch (err) {
+            pass=false;
+            console.error(err);
+          }
         }
-        if (pass) resultList.push('AC');
         if (runner.signal)resultList.push('TLE');
+        else if (pass) resultList.push('AC');
+        else resultList.push('WA');
         // workerThreads.parentPort.postMessage(runner.output);
       });
     } catch (err) {

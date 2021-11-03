@@ -23,7 +23,8 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "fs": "^0.0.1-security",
-    "mariadb": "^2.5.4"
+    "mariadb": "^2.5.4",
+    "os": "^0.1.2"
   },
   "devDependencies": {
     "eslint": "^8.0.1",
