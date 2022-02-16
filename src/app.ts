@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const PORT = 80;
 const COOKIE_AGE = 1000*60*60;
 
@@ -6,13 +7,12 @@ import session from 'express-session';
 import http from 'http';
 import mariadb from 'mariadb';
 import workerThreads from 'worker_threads';
-import path from 'path';
 
 const pool=mariadb.createPool({
-  host: '172.18.0.2',
+  host: 'mariadb',
   user: 'root',
-  password: 'serect',
-  connectionLimit: '5',
+  password: 'my-secret-pw',
+  connectionLimit: 5,
 });
 pool.getConnection();
 
@@ -28,7 +28,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge: COOKIE_AGE},
 }));
-const __dirname=path.resolve();
+// const __dirname=path.resolve();
 
 // eslint-disable-next-line require-jsdoc
 async function dbTest() {
@@ -43,23 +43,23 @@ async function dbTest() {
   }
 }
 
-app.get('/', (req, res)=>{
+app.get('/', (req: any, res: any)=>{
   if (res.session!==0) req.session.a++;
   else req.session.a=0;
   res.render('index', {a: req.session.a});
 });
 
-app.post('/submitRegister', (req, res)=>{
+app.post('/submitRegister', (req: any, res: any)=>{
 
 });
 
-app.post('/submitLogin', (req, res)=>{
+app.post('/submitLogin', (req: any, res: any)=>{
 
 });
 
-app.post('/dbTestSubmit', (req, res)=>{
-  let conn;
-  let message;
+app.post('/dbTestSubmit', (req: any, res: any)=>{
+  let conn: { query: (arg0: any) => string | PromiseLike<string>; end: () => void; };
+  let message:string;
   // eslint-disable-next-line require-jsdoc
   async function dbLookup() {
     try {
@@ -67,7 +67,7 @@ app.post('/dbTestSubmit', (req, res)=>{
       message = await conn.query(req.body.DB);
     } catch (err) {
       console.log(err);
-      message = err;
+      message =<string> err;
     } finally {
       if (conn) conn.end();
       res.render('index', {a: JSON.stringify(message)});
@@ -76,8 +76,8 @@ app.post('/dbTestSubmit', (req, res)=>{
   dbLookup();
 });
 
-app.post('/cppTestSubmit', (req, res)=>{
-  const codeRunner = new workerThreads.Worker(__dirname+'/worker.mjs');
+app.post('/cppTestSubmit', (req: { body: { cpp: any; }; }, res: { render: (arg0: string, arg1: { a: string; }) => void; })=>{
+  const codeRunner = new workerThreads.Worker(__dirname+'/worker.js');
   codeRunner.postMessage({
     code: req.body.cpp,
     type: 'cpp',
@@ -95,7 +95,7 @@ app.post('/cppTestSubmit', (req, res)=>{
       timeout: '10',
     }],
   });
-  codeRunner.on('message', (result)=>{
+  codeRunner.on('message', (result:string)=>{
     res.render('index', {a: JSON.stringify(result)});
   });
 });

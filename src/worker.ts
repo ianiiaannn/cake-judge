@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import workerThreads from 'worker_threads';
 import fs from 'fs';
 import childProcess from 'child_process';
 import os from 'os';
 
 // eslint-disable-next-line require-jsdoc
-async function testCpp(input, questions) {
+async function testCpp(input: string | NodeJS.ArrayBufferView, questions: any[]) {
   let message;
   try {
     fs.writeFileSync('/tmp/test.cpp', input);
@@ -13,10 +14,10 @@ async function testCpp(input, questions) {
     console.log(err);
     message=err;
   }
-  const resultList=[];
+  const resultList: string[]=[];
   if (!message) {
     try {
-      questions.forEach(async (element) =>{
+      questions.forEach(async (element: { input: string; timeout: number; output: (string | null)[]; }) =>{
         const resultByLine=[];
         const runner = childProcess.spawnSync('/tmp/test.run', {
           input: element.input+os.EOL,
@@ -25,7 +26,7 @@ async function testCpp(input, questions) {
         });
         let i=0;
         let output=runner.output[1];
-        if (output.indexOf('\n')!=-1) {
+        if (output?.indexOf('\n')!=-1) {
           while (output) {
             resultByLine[i]=output.substr(0, output.indexOf('\n'));
             output=output.substr(output.indexOf('\n')+1, output.length);
@@ -35,7 +36,7 @@ async function testCpp(input, questions) {
         let pass=true;
         for (i=0; i<=resultByLine.length-1; i++) {
           try {
-            resultByLine[i].trim();
+            if (resultByLine.length)resultByLine[i]?.trim();
             if (element.output[i] != resultByLine[i]) pass=false;
           } catch (err) {
             pass=false;
@@ -50,13 +51,13 @@ async function testCpp(input, questions) {
     } catch (err) {
       console.error(err);
     } finally {
-      workerThreads.parentPort.postMessage(resultList);
+      workerThreads.parentPort?.postMessage(resultList);
     }
   } else {
-    workerThreads.parentPort.postMessage('CE');
+    workerThreads.parentPort?.postMessage('CE');
   }
 }
 
-workerThreads.parentPort.on('message', (message)=>{
+workerThreads.parentPort?.on('message', (message)=>{
   testCpp(message.code, message.testData);
 });

@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cake-judge:
+    build: .
+    ports:
+      - 80:80
+    links:
+      - "mariadb:mariadb"
+  mariadb:
+    image: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=my-secret-pw

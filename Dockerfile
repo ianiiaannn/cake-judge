@@ -6,4 +6,5 @@ WORKDIR /app
 ADD . /app
 USER root
 RUN npm i
-CMD node .
+RUN npm run build
+CMD npm run start
