@@ -1,6 +1,7 @@
+/* eslint-disable object-curly-spacing */
 /* eslint-disable max-len */
 const PORT = 80;
-const COOKIE_AGE = 1000*60*60;
+const COOKIE_AGE = 1000 * 60 * 60;
 
 import express from 'express';
 import session from 'express-session';
@@ -8,33 +9,32 @@ import http from 'http';
 import mariadb from 'mariadb';
 import workerThreads from 'worker_threads';
 
-const pool=mariadb.createPool({
+
+const pool = mariadb.createPool({
   host: 'mariadb',
   user: 'root',
   password: 'my-secret-pw',
-  connectionLimit: 5,
 });
 pool.getConnection();
 
-const app=express();
+const app = express();
 http.createServer(app);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: '<Serect here change this>',
   resave: true,
   saveUninitialized: false,
-  cookie: {maxAge: COOKIE_AGE},
+  cookie: { maxAge: COOKIE_AGE },
 }));
-// const __dirname=path.resolve();
 
 // eslint-disable-next-line require-jsdoc
 async function dbTest() {
   let conn;
   try {
-    conn=await pool.getConnection();
+    conn = await pool.getConnection();
     console.log('db works');
   } catch (err) {
     console.log(err);
@@ -43,23 +43,25 @@ async function dbTest() {
   }
 }
 
-app.get('/', (req: any, res: any)=>{
-  if (res.session!==0) req.session.a++;
-  else req.session.a=0;
-  res.render('index', {a: req.session.a});
+app.get('/', (req: any, res: any) => {
+  res.render('index');
 });
 
-app.post('/submitRegister', (req: any, res: any)=>{
-
-});
-
-app.post('/submitLogin', (req: any, res: any)=>{
+app.post('/submitRegister', (req: any, res: any) => {
 
 });
 
-app.post('/dbTestSubmit', (req: any, res: any)=>{
+app.post('/submitLogin', (req: any, res: any) => {
+
+});
+
+app.get('/page', (req: any, res: any) => {
+  res.render('blank_page_test');
+});
+
+app.post('/dbTestSubmit', (req: any, res: any) => {
   let conn: { query: (arg0: any) => string | PromiseLike<string>; end: () => void; };
-  let message:string;
+  let message: string;
   // eslint-disable-next-line require-jsdoc
   async function dbLookup() {
     try {
@@ -67,17 +69,17 @@ app.post('/dbTestSubmit', (req: any, res: any)=>{
       message = await conn.query(req.body.DB);
     } catch (err) {
       console.log(err);
-      message =<string> err;
+      message = <string>err;
     } finally {
       if (conn) conn.end();
-      res.render('index', {a: JSON.stringify(message)});
+      res.render('index_old', { a: JSON.stringify(message) });
     }
   };
   dbLookup();
 });
 
-app.post('/cppTestSubmit', (req: { body: { cpp: any; }; }, res: { render: (arg0: string, arg1: { a: string; }) => void; })=>{
-  const codeRunner = new workerThreads.Worker(__dirname+'/worker.js');
+app.post('/cppTestSubmit', (req: any, res: any) => {
+  const codeRunner = new workerThreads.Worker(__dirname + '/worker.js');
   codeRunner.postMessage({
     code: req.body.cpp,
     type: 'cpp',
@@ -95,12 +97,22 @@ app.post('/cppTestSubmit', (req: { body: { cpp: any; }; }, res: { render: (arg0:
       timeout: '10',
     }],
   });
-  codeRunner.on('message', (result:string)=>{
-    res.render('index', {a: JSON.stringify(result)});
+  codeRunner.on('message', (result: string) => {
+    res.render('index_old', { a: JSON.stringify(result) });
   });
 });
 
+
+app.get('*', (req, res) => {
+  if (req.accepts('html')) {
+    res.render('404');
+    return;
+  }
+  res.json({ error: 'Not found' });
+});
+
+
 dbTest();
-app.listen(PORT, ()=>{
-  console.log('server stated on port '+PORT+'.');
+app.listen(PORT, () => {
+  console.log('server stated on port ' + PORT + '.');
 });
