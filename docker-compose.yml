@@ -6,7 +6,12 @@ services:
       - 80:80
     links:
       - "mariadb:mariadb"
+    depends_on:
+      - serviceName: mariadb
   mariadb:
     image: mariadb
     environment:
       - MARIADB_ROOT_PASSWORD=my-secret-pw
+    volumes:
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./scripts/data.sql:/docker-entrypoint-initdb.d/2.sql"
