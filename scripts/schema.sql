@@ -54,7 +54,7 @@ CREATE TABLE `appconfigs` (
   `redirect_uri` varchar(255) NOT NULL DEFAULT '',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- 比賽與參加者?
 
@@ -100,7 +100,7 @@ CREATE TABLE `contestants` (
   `status` varchar(20) NOT NULL DEFAULT 'registed',
   `finishtime` datetime NOT NULL DEFAULT '2006-06-08 00:00:00',
   PRIMARY KEY (`id`)
-) AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- 論壇
 

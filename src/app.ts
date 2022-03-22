@@ -6,17 +6,11 @@ const COOKIE_AGE = 1000 * 60 * 60;
 import express from 'express';
 import session from 'express-session';
 import http from 'http';
-import mariadb from 'mariadb';
 import workerThreads from 'worker_threads';
+import { connect } from 'mongoose';
+import { UserModel } from './schemas';
 
-
-const pool = mariadb.createPool({
-  host: 'mariadb',
-  user: 'root',
-  password: 'my-secret-pw',
-});
-pool.getConnection();
-
+const uri:string='mongodb://mongo:27017/cake-judge';
 const app = express();
 http.createServer(app);
 app.set('view engine', 'ejs');
@@ -31,6 +25,7 @@ app.use(session({
 }));
 
 // eslint-disable-next-line require-jsdoc
+/*
 async function dbTest() {
   let conn;
   try {
@@ -42,13 +37,13 @@ async function dbTest() {
     if (conn) conn.end();
   }
 }
+*/
 
 app.get('/', (req: any, res: any) => {
   res.render('index');
 });
 
 app.post('/submitRegister', (req: any, res: any) => {
-
 });
 
 app.post('/submitLogin', (req: any, res: any) => {
@@ -58,7 +53,7 @@ app.post('/submitLogin', (req: any, res: any) => {
 app.get('/page', (req: any, res: any) => {
   res.render('blank_page_test');
 });
-
+/*
 app.post('/dbTestSubmit', (req: any, res: any) => {
   let conn: { query: (arg0: any) => string | PromiseLike<string>; end: () => void; };
   let message: string;
@@ -77,7 +72,7 @@ app.post('/dbTestSubmit', (req: any, res: any) => {
   };
   dbLookup();
 });
-
+*/
 app.post('/cppTestSubmit', (req: any, res: any) => {
   const codeRunner = new workerThreads.Worker(__dirname + '/worker.js');
   codeRunner.postMessage({
@@ -112,7 +107,13 @@ app.get('*', (req, res) => {
 });
 
 
-dbTest();
 app.listen(PORT, () => {
-  console.log('server stated on port ' + PORT + '.');
+  console.log('Server stated on port ' + PORT + '.');
+  connect(uri).then(() => {
+    console.log('Connected to the database.');
+  }).catch((err) => {
+    console.log('Cannot connect to the database.');
+    console.error(err);
+    process.exit(1);
+  });
 });
