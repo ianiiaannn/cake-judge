@@ -1,7 +1,11 @@
+FROM lypnol/isolate AS ISOLATE
+
 FROM gcc:latest
-RUN mkdir /tmp/cake-judge
 
 FROM node
+COPY --from=ISOLATE / /
+
+RUN mkdir /tmp/cake-judge
 WORKDIR /app
 ADD . /app
 USER root
