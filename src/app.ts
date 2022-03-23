@@ -6,11 +6,12 @@ const COOKIE_AGE = 1000 * 60 * 60;
 import express from 'express';
 import session from 'express-session';
 import http from 'http';
-import workerThreads from 'worker_threads';
 import { connect } from 'mongoose';
-import { UserModel } from './schemas';
+import { cppRoute } from './routes/cpp-route';
+import { notFound } from './routes/404';
+// import { UserModel } from './schemas';
 
-const uri:string='mongodb://mongo:27017/cake-judge';
+const uri: string = 'mongodb://mongo:27017/cake-judge';
 const app = express();
 http.createServer(app);
 app.set('view engine', 'ejs');
@@ -73,39 +74,13 @@ app.post('/dbTestSubmit', (req: any, res: any) => {
   dbLookup();
 });
 */
-app.post('/cppTestSubmit', (req: any, res: any) => {
-  const codeRunner = new workerThreads.Worker(__dirname + '/worker.js');
-  codeRunner.postMessage({
-    code: req.body.cpp,
-    type: 'cpp',
-    testData: [{
-      input: 'world\nnode',
-      output: ['hello, world', 'hello, node'],
-      memLimit: '10000',
-      timeout: '10',
-    }, {
-      // eslint-disable-next-line max-len
-      input: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      // eslint-disable-next-line max-len
-      output: ['hello, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'],
-      memLimit: '10000',
-      timeout: '10',
-    }],
-  });
-  codeRunner.on('message', (result: string) => {
-    res.render('index_old', { a: JSON.stringify(result) });
-  });
+app.use('/cppTestSubmit', cppRoute);
+app.get('/index.html', (req, res) => {
+  res.redirect('\\');
 });
 
-
-app.get('*', (req, res) => {
-  if (req.accepts('html')) {
-    res.render('404');
-    return;
-  }
-  res.json({ error: 'Not found' });
-});
-
+// 404 page should be placed at the end.
+app.use('*', notFound);
 
 app.listen(PORT, () => {
   console.log('Server stated on port ' + PORT + '.');
