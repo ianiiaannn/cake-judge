@@ -9,7 +9,7 @@ import http from 'http';
 import { connect } from 'mongoose';
 import { cppRoute } from './routes/cpp-route';
 import { notFound } from './routes/404';
-// import { UserModel } from './schemas';
+// import { UserModel } from './schemas/user-schemas';
 
 const uri: string = 'mongodb://mongo:27017/cake-judge';
 const app = express();

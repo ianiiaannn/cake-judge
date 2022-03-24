@@ -1,4 +1,5 @@
 import { testCpp } from '../runner/cpp-runner';
+import { pushJob } from '../runner/runner-loop';
 /**
  * Cpp runner route.
  * @param {any} req request
@@ -18,19 +19,13 @@ export function cppRoute(req: any, res: any) {
     memLimit: '10000',
     timeout: '10',
   }];
-
-  testCpp(req.body.cpp, testQustions).then((result: any) => {
+  const code: any = {
+    language: 'cpp',
+    code: req.body.cpp,
+  };
+  res.render('result', { output: pushJob({ code, testQustions }) });
+  /* testCpp(req.body.cpp, testQustions).then((result: any) => {
     res.render('result', { output: JSON.stringify(result) });
   });
-  /*
-  // eslint-disable-next-line max-len
-  // eslint-disable-next-line max-len
-  const codeRunner = new workerThreads.Worker(
-    __dirname + '../runner/cpp-runner.js');
-  codeRunner.postMessage({
-    d
-  });
-  codeRunner.on('message', (result: string) => {
-    res.render('result', { output: JSON.stringify(result) });
-  }); */
+  */
 }
