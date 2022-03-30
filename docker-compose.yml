@@ -6,9 +6,14 @@ services:
       - 80:80
     links:
       - "mongo:mongo"
+      - "redis:redis"
     depends_on:
       - mongo
+      - redis
   mongo:
     image: mongo
     volumes:
       - ./data:/data/db
+  redis:
+    image: redis
+

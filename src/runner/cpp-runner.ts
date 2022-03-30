@@ -10,14 +10,12 @@ import { CodeResult } from '../code-result';
  * @param {array} questions the questions to be tested
  */
 export async function testCpp(input: string | NodeJS.ArrayBufferView, questions: any[]) {
-  let message;
   try {
     fs.writeFileSync('/tmp/test.cpp', input);
     childProcess.execSync('g++ -lstdc++ -o /tmp/test.run /tmp/test.cpp');
   } catch (err) {
     console.log(err);
-    message = err;
-    return [CodeResult.CompileError, message];
+    return [CodeResult.CompileError, err];
   }
   const resultList: string[] = [];
   try {
@@ -54,6 +52,7 @@ export async function testCpp(input: string | NodeJS.ArrayBufferView, questions:
   } catch (err) {
     console.error(err);
   } finally {
+    console.log(resultList);
     return resultList;
   }
 }

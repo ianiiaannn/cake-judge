@@ -1,11 +1,10 @@
-import { testCpp } from '../runner/cpp-runner';
 import { pushJob } from '../runner/runner-loop';
 /**
  * Cpp runner route.
  * @param {any} req request
  * @param {any} res response
  */
-export function cppRoute(req: any, res: any) {
+export async function cppRoute(req: any, res: any) {
   const testQustions: any = [{
     input: 'world\nnode',
     output: ['hello, world', 'hello, node'],
@@ -23,9 +22,5 @@ export function cppRoute(req: any, res: any) {
     language: 'cpp',
     code: req.body.cpp,
   };
-  res.render('result', { output: pushJob({ code, testQustions }) });
-  /* testCpp(req.body.cpp, testQustions).then((result: any) => {
-    res.render('result', { output: JSON.stringify(result) });
-  });
-  */
+  res.render('result', { output: await pushJob({ code, testQustions }) });
 }
