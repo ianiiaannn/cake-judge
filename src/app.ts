@@ -6,9 +6,11 @@ const COOKIE_AGE = 1000 * 60 * 60;
 import express from 'express';
 import session from 'express-session';
 import http from 'http';
+import { createClient } from 'redis';
 import { connect } from 'mongoose';
 import { cppRoute } from './routes/cpp-route';
 import { notFound } from './routes/404';
+import { index } from './routes/index';
 // import { UserModel } from './schemas/user-schemas';
 
 const uri: string = 'mongodb://mongo:27017/cake-judge';
@@ -25,25 +27,8 @@ app.use(session({
   cookie: { maxAge: COOKIE_AGE },
 }));
 
-// eslint-disable-next-line require-jsdoc
-/*
-async function dbTest() {
-  let conn;
-  try {
-    conn = await pool.getConnection();
-    console.log('db works');
-  } catch (err) {
-    console.log(err);
-  } finally {
-    if (conn) conn.end();
-  }
-}
-*/
 
-app.get('/', (req: any, res: any) => {
-  res.render('index');
-});
-
+app.use(['/', 'index', 'index.html', 'index.htm'], index);
 app.post('/submitRegister', (req: any, res: any) => {
 });
 
@@ -54,26 +39,7 @@ app.post('/submitLogin', (req: any, res: any) => {
 app.get('/page', (req: any, res: any) => {
   res.render('blank_page_test');
 });
-/*
-app.post('/dbTestSubmit', (req: any, res: any) => {
-  let conn: { query: (arg0: any) => string | PromiseLike<string>; end: () => void; };
-  let message: string;
-  // eslint-disable-next-line require-jsdoc
-  async function dbLookup() {
-    try {
-      conn = await pool.getConnection();
-      message = await conn.query(req.body.DB);
-    } catch (err) {
-      console.log(err);
-      message = <string>err;
-    } finally {
-      if (conn) conn.end();
-      res.render('index_old', { a: JSON.stringify(message) });
-    }
-  };
-  dbLookup();
-});
-*/
+
 app.use('/cppTestSubmit', cppRoute);
 app.get('/index.html', (req, res) => {
   res.redirect('\\');
@@ -82,7 +48,7 @@ app.get('/index.html', (req, res) => {
 // 404 page should be placed at the end.
 app.use('*', notFound);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log('Server stated on port ' + PORT + '.');
   connect(uri).then(() => {
     console.log('Connected to the database.');
@@ -91,4 +57,13 @@ app.listen(PORT, () => {
     console.error(err);
     process.exit(1);
   });
+  const client = createClient({ url: 'redis://redis:6379' });
+  client.on('error', (error: any) => {
+    console.log('Unable to connect to redis');
+    console.error(error);
+    process.exit(1);
+  });
+  await client.connect();
+  console.log('Connected to redis.');
+  client.quit();
 });

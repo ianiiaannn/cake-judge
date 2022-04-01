@@ -2,7 +2,7 @@
 import fs from 'fs';
 import childProcess from 'child_process';
 import os from 'os';
-import { CodeResult } from '../code-result';
+import { CodeResult } from '../enums/code-result';
 
 /**
  * Test the input code. Note that the input code may execute shell injection.
