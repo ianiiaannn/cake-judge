@@ -9,8 +9,7 @@ import http from 'http';
 import { createClient } from 'redis';
 import { connect } from 'mongoose';
 import { cppRoute } from './routes/cpp-route';
-import { notFound } from './routes/404';
-import { index } from './routes/index';
+import { proxyRoute } from './routes/proxy';
 // import { UserModel } from './schemas/user-schemas';
 
 const uri: string = 'mongodb://mongo:27017/cake-judge';
@@ -28,25 +27,15 @@ app.use(session({
 }));
 
 
-app.use(['/', 'index', 'index.html', 'index.htm'], index);
-app.post('/submitRegister', (req: any, res: any) => {
-});
-
-app.post('/submitLogin', (req: any, res: any) => {
-
-});
+// app.use(['/', 'index', 'index.html', 'index.htm'], index);
 
 app.get('/page', (req: any, res: any) => {
   res.render('blank_page_test');
 });
 
 app.use('/cppTestSubmit', cppRoute);
-app.get('/index.html', (req, res) => {
-  res.redirect('\\');
-});
 
-// 404 page should be placed at the end.
-app.use('*', notFound);
+app.use('*', proxyRoute);
 
 app.listen(PORT, async () => {
   console.log('Server stated on port ' + PORT + '.');
