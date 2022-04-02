@@ -26,5 +26,5 @@ export async function cppRoute(req: any, res: any) {
   };
   const result = pushJob({ code, testQustions });
   console.log(result);
-  res.render('result', { output: result });
+  res.send(result);
 }

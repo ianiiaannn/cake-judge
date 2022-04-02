@@ -1,20 +1,20 @@
-FROM lypnol/isolate AS ISOLATE
+FROM node:lts AS ANGULAR
 
-FROM gcc:latest AS GCC
-FROM openjdk:latest AS JAVA
-FROM python:latest AS PYTHON
+ADD ./angular /app/angular
+WORKDIR /app/angular
+RUN npm i
+RUN npm run build
 
-FROM node
-COPY --from=ISOLATE / /
-COPY --from=GCC / /
-COPY --from=JAVA / /
-COPY --from=PYTHON / /
+FROM node:lts
 
+RUN apt update
+RUN apt install -y build-essential python3-dev
 WORKDIR /app
 ADD ./package.json /app
 ADD ./package-lock.json /app
 USER root
 RUN npm i
 ADD . /app
+COPY --from=ANGULAR /app/angular/dist /app/angular/dist
 RUN npm run build
-CMD npm run start
+CMD ["npm", "start"]

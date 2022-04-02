@@ -1,22 +1,22 @@
-/* eslint-disable object-curly-spacing */
-/* eslint-disable max-len */
-const PORT = 80;
 const COOKIE_AGE = 1000 * 60 * 60;
 
 import express from 'express';
 import session from 'express-session';
 import http from 'http';
+import helmet from 'helmet';
+import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import { connect } from 'mongoose';
 import { cppRoute } from './routes/cpp-route';
-import { proxyRoute } from './routes/proxy';
+import { notFound } from './routes/404';
 // import { UserModel } from './schemas/user-schemas';
 
+dotenv.config();
 const uri: string = 'mongodb://mongo:27017/cake-judge';
 const app = express();
 http.createServer(app);
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static('angular/dist'));
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -26,19 +26,12 @@ app.use(session({
   cookie: { maxAge: COOKIE_AGE },
 }));
 
-
-// app.use(['/', 'index', 'index.html', 'index.htm'], index);
-
-app.get('/page', (req: any, res: any) => {
-  res.render('blank_page_test');
-});
-
 app.use('/cppTestSubmit', cppRoute);
 
-app.use('*', proxyRoute);
+app.use('*', notFound);
 
-app.listen(PORT, async () => {
-  console.log('Server stated on port ' + PORT + '.');
+app.listen(process.env.PORT, async () => {
+  console.log('Server stated on port ' + process.env.PORT + '.');
   connect(uri).then(() => {
     console.log('Connected to the database.');
   }).catch((err) => {

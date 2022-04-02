@@ -7,7 +7,6 @@ services:
     links:
       - "mongo:mongo"
       - "redis:redis"
-      - "angular:angular"
     depends_on:
       - mongo
       - redis
@@ -17,5 +16,3 @@ services:
       - ./data:/data/db
   redis:
     image: redis
-  angular:
-    build: angular
