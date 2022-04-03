@@ -2,3 +2,6 @@
 /dist
 /data
 /scripts
+/angular/node_modules
+/angular/dist
+/angular/.angular

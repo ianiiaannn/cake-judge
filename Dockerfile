@@ -15,6 +15,6 @@ ADD ./package-lock.json /app
 USER root
 RUN npm i
 ADD . /app
-COPY --from=ANGULAR /app/angular/dist /app/angular/dist
+COPY --from=ANGULAR /app/angular /app/angular
 RUN npm run build
 CMD ["npm", "start"]
