@@ -14,5 +14,6 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
+    ports:
   redis:
     image: redis

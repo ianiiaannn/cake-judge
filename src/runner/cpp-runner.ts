@@ -19,10 +19,10 @@ export async function testCpp(input: string | NodeJS.ArrayBufferView, questions:
   }
   const resultList: string[] = [];
   try {
-    questions.forEach(async (element: { input: string; timeout: number; output: (string | null)[]; }) => {
+    questions.forEach(async (element: { input: (string|null)[]; timeout: number; output: (string | null)[]; }) => {
       const resultByLine = [];
       const runner = childProcess.spawnSync('/tmp/test.run', {
-        input: element.input + os.EOL,
+        input: element.input.join('\n') + os.EOL,
         encoding: 'utf-8',
         timeout: element.timeout * 1000,
       });

@@ -16,5 +16,8 @@
     ],
     "rules": {
       "object-curly-spacing": "off"
-    }
+    },
+    "ignorePatterns": [
+        "angular/"
+    ]
 }

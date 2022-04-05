@@ -1,5 +1,5 @@
 import { pushJob } from '../runner/runner-loop';
-import { Submit } from '../schemas/submit-interface';
+import { Submit } from '../interfaces/submit-interface';
 import { Language } from '../enums/languages';
 /**
  * Cpp runner route.

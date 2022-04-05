@@ -7,6 +7,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { IndexComponent } from './index/index.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { RouterModule } from '@angular/router';
+import { ProblemListComponent } from './problem-list/problem-list.component';
+import { ProblemPageComponent } from './problem-page/problem-page.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,13 +17,16 @@ import { RouterModule } from '@angular/router';
     SidebarComponent,
     IndexComponent,
     QuestionsComponent,
+    ProblemListComponent,
+    ProblemPageComponent,
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { path: '', component: IndexComponent },
-      { path: 'questions', component: QuestionsComponent },
+      { path: 'Problems', component: ProblemListComponent },
     ]),
   ],
   providers: [],

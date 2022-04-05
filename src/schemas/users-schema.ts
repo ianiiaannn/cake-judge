@@ -1,9 +1,8 @@
-/* eslint-disable object-curly-spacing */
-import { Schema, model } from 'mongoose';
+import { Schema } from 'mongoose';
 import { Roles } from '../enums/roles';
-import { Submit } from './submit-interface';
+import { Submit } from '../interfaces/submit-interface';
 
-interface User {
+export interface Users {
   account: string;// login name
   authHost?: string;
   username: string;// display name
@@ -28,9 +27,7 @@ interface User {
   ce?: number;
   se?: number;
   submit?: [Submit];
-  import?: { any: any};
+  import?: { any: any };
 }
 
-const UserSchema = new Schema<User>();
-
-export const UserModel = model<User>('User', UserSchema);
+export const UsersSchema = new Schema<Users>();
