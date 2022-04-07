@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { ProblemListComponent } from './problem-list/problem-list.component';
 import { ProblemPageComponent } from './problem-page/problem-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     QuestionsComponent,
     ProblemListComponent,
     ProblemPageComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot([
       { path: '', component: IndexComponent },
       { path: 'Problems', component: ProblemListComponent },
+      { path: 'ShowProblem', component: ProblemPageComponent },
+      { path: '404', component: PageNotFoundComponent },
+      { path: '**', redirectTo: '/404' },
     ]),
   ],
   providers: [],

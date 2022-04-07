@@ -35,9 +35,10 @@ export class ProblemListComponent implements OnInit {
               columns: [
                 {
                   data: 'title', title: 'Title',
-                  "render": function (data, type, row, meta) {
+                  render : function (data, type, row, meta) {
                     if (type === 'display') {
-                      data = '<a [routerLink]="ShowProblem?problemid=' + row.name + '">' + data + '</a>';
+                      // data= '<a onClick="this.router.navigate(\'ShowProblem\','+ row.name+')">' + data + '</a>';
+                      data = '<a [routerLink]="[\'ShowProblem\']" [queryParams]="{problemid: ' + row.name + '}" href="ShowProblem?problemid='+ row.name +'">' + data + '</a>';
                     }
                     return data;
                   }
@@ -46,7 +47,7 @@ export class ProblemListComponent implements OnInit {
                 { data: 'difficulty', title: 'Difficulty' },
                 { data: 'tags', title: 'Tags' },
                 { data: 'reference', title: 'Reference' },
-              ]
+              ],
             }
           );
         }, (err: any) => {

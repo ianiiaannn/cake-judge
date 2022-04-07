@@ -50,12 +50,14 @@ export function problemSubmitTest() {
     submitSum: 1,
     clickSum: 1,
     acSum: 1,
-    reference: ['test'],
-    tags: ['test'],
+    reference: ['test', '@ianiiaannn'],
+    tags: ['test', 'I/O'],
     dispaly: true,
     problemSettings: {
       waVisable: true,
     },
+  }).then(() => {
+    console.log('Inserted test problem');
   });
 }
 
