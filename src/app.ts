@@ -29,7 +29,8 @@ app.use(session({
 
 app.use('/cppTestSubmit', cppRoute);
 app.use('/api/problems', problems);
-app.use('*', notFound);
+app.use('*', notFound); // If accpet html, send index.html or send json 404
+
 
 app.listen(process.env.PORT, async () => {
   console.log('Server stated on port ' + process.env.PORT + '.');

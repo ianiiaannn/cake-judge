@@ -21,6 +21,7 @@
     "@angular/router": "~13.3.0",
     "@rxjs/rx": "^4.1.0",
     "datatables.net": "^1.11.5",
+    "datatables.net-bs4": "^1.11.5",
     "datatables.net-dt": "^1.11.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - 80:80
+      - 443:443
     links:
       - "mongo:mongo"
       - "redis:redis"
@@ -14,6 +15,5 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
-    ports:
   redis:
     image: redis
