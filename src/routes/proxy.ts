@@ -1,5 +1,5 @@
 import httpProxy from 'http-proxy';
-
+import { Request, Response } from 'express';
 const proxy = httpProxy.createProxyServer();
 
 /**
@@ -7,7 +7,7 @@ const proxy = httpProxy.createProxyServer();
  * @param {any} req request
  * @param {any} res response
  */
-export function proxyRoute(req: any, res: any) {
+export function proxyRoute(req: Request, res: Response) {
   proxy.web(req, res, {
     target: 'http://angular:4200',
   }, (error:any)=>{

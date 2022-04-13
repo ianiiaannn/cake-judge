@@ -1,12 +1,13 @@
 import { pushJob } from '../runner/runner-loop';
 import { Submit } from '../interfaces/submit-interface';
 import { Language } from '../enums/languages';
+import { Request, Response } from 'express';
 /**
  * Cpp runner route.
  * @param {any} req request
  * @param {any} res response
  */
-export async function cppRoute(req: any, res: any) {
+export async function cppRoute(req: Request, res: Response) {
   const testQustions: any = [{
     input: 'world\nnode',
     output: ['hello, world', 'hello, node'],

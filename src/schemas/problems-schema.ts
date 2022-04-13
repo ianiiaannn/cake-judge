@@ -17,7 +17,7 @@ interface Problems {
   judgeMode: string; // need an enum?
   test: [Test];
   difficulty: number; // need an enum?
-  submitSum: number;
+  submitSum: number;// How many account tried
   clickSum: number;
   acSum: number;
   reference?: [string];

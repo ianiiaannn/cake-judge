@@ -1,8 +1,10 @@
-const COOKIE_AGE = 1000 * 60 * 60;
+export const COOKIE_AGE = 1000 * 60 * 60 * 24;
+export const SALT_WORK_FACTORY = 10;
+export const JWT_SECRET = 'secretttttttttttttttttttttttttTt';
+export const JWT_EXPIRE = '1d';
 export const uri: string = 'mongodb://mongo:27017/cake-judge';
 
 import express from 'express';
-import session from 'express-session';
 import http from 'http';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
@@ -11,7 +13,9 @@ import { cppRoute } from './routes/cpp-route';
 import { notFound } from './routes/404';
 import { dbInit } from './dbconn';
 import { problems } from './routes/problems';
-// import { UserModel } from './schemas/user-schemas';
+import { showProblem } from './routes/show-problem';
+import { register } from './routes/register';
+import { login } from './routes/login';
 
 dotenv.config();
 const app = express();
@@ -20,15 +24,12 @@ app.use(express.static('angular/dist'));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: '<Serect here change this>',
-  resave: true,
-  saveUninitialized: false,
-  cookie: { maxAge: COOKIE_AGE },
-}));
 
 app.use('/cppTestSubmit', cppRoute);
-app.use('/api/problems', problems);
+app.get('/api/problems', problems);
+app.get('/api/showProblem', showProblem);
+app.post('/api/register', register);
+app.post('/api/login', login);
 app.use('*', notFound); // If accpet html, send index.html or send json 404
 
 

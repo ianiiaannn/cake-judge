@@ -1,13 +1,14 @@
 import { Schema } from 'mongoose';
+import { Language } from '../enums/languages';
 import { Roles } from '../enums/roles';
 import { Submit } from '../interfaces/submit-interface';
 
 export interface Users {
   account: string;// login name
   authHost?: string;
-  username: string;// display name
+  displayName: string;// display name
   salt?: string;
-  hash?: string;
+  hash?: string; // hashed password
   schoolID?: number;
   vclassID?: number;// ?
   email: string;
@@ -15,9 +16,11 @@ export interface Users {
   comment?: string; // status bar?
   role: Roles;
   registerTime?: Date;
+  registerIP?: string;
   lastLogin?: Date;
   ipSet?: [string];
   userLanguage?: string;
+  codeLanguage?: Language;
   ac?: number;
   wa?: number;
   tle?: number;
@@ -26,6 +29,8 @@ export interface Users {
   re?: number;
   ce?: number;
   se?: number;
+  acList?: [string];
+  triedList?: [string];
   submit?: [Submit];
   import?: { any: any };
 }

@@ -17,13 +17,14 @@ export class ProblemListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.http.get('/api/problems',
+    this.route.queryParams.subscribe(params => {
+      this.http.get('/api/problems?query='+params['query'],
         {
           observe: 'response',
           responseType: 'json'
         }).subscribe((res: any) => {
           console.log(res.body);
+          // $('#dataTable').DataTable().destroy();
           $('#dataTable').DataTable(
             {
               autoWidth: true,
@@ -49,7 +50,7 @@ export class ProblemListComponent implements OnInit {
                 { data: 'reference', title: 'Reference' },
               ],
             }
-          );
+          ).clear().rows.add(res.data).draw();
         }, (err: any) => {
           console.log(err);
         });

@@ -19,12 +19,10 @@
   },
   "homepage": "https://github.com/ianiiaannn/cake-judge#readme",
   "dependencies": {
+    "@types/express-serve-static-core": "^4.17.28",
     "bcrypt": "^5.0.1",
-    "bee-queue": "^0.3.0",
     "bull": "^4.8.1",
-    "child-process": "^1.0.2",
     "dotenv": "^16.0.0",
-    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "fs": "^0.0.1-security",
@@ -37,10 +35,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/bull": "^3.15.8",
-    "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/http-proxy": "^1.17.8",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.18",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
