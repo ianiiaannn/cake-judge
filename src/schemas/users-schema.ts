@@ -4,7 +4,7 @@ import { Roles } from '../enums/roles';
 import { Submit } from '../interfaces/submit-interface';
 
 export interface Users {
-  account: string;// login name
+  username: string;// login name
   authHost?: string;
   displayName: string;// display name
   salt?: string;

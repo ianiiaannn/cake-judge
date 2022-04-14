@@ -14,8 +14,9 @@ import jwt from 'jsonwebtoken';
  * @param {Express.Response} res resonse
  */
 export function register(req: Request, res: Response) {
-  const { account, password, email, displayName } = req.body;
-  if (!account || !displayName || !password || !email) {
+  const { username, password, email, displayName } = req.body;
+  console.log(req.body);
+  if (!username || !displayName || !password || !email) {
     res.status(400).json({
       error: 'Bad Request',
       message: 'Missing required fields',
@@ -23,8 +24,7 @@ export function register(req: Request, res: Response) {
     return;
   }
   dbconn.collection('Users').findOne({
-    account: account,
-    email: email,
+    $or: [{ username: username }, { email: email }],
     })
     .then((doc: any) => {
       if (doc) {
@@ -44,7 +44,7 @@ export function register(req: Request, res: Response) {
         return;
       }
       const user: Users = {
-        account,
+        username,
         displayName,
         email,
         hash,
@@ -68,7 +68,7 @@ export function register(req: Request, res: Response) {
       dbconn.collection('Users').insertOne(user)
         .then(() => {
           const token= jwt.sign({
-            account: user.account,
+            username: user.username,
             role: user.role,
           }, JWT_SECRET, {
             expiresIn: JWT_EXPIRE,

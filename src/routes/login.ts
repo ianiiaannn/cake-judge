@@ -10,8 +10,8 @@ import { COOKIE_AGE, JWT_EXPIRE, JWT_SECRET } from '../app';
  * @param {Express.Response} res response
  */
 export function login(req: Request, res: Response) {
-  const { account, password } = req.body;
-  if (!account || !password) {
+  const { username, password } = req.body;
+  if (!username || !password) {
     res.status(400).json({
       error: 'Bad Request',
       message: 'Missing required fields',
@@ -19,7 +19,7 @@ export function login(req: Request, res: Response) {
     return;
   }
   dbconn.collection('Users').findOne({
-    $or: [{ account: account }, { email: account }],
+    $or: [{ username: username }],
   })
     .then((doc: any) => {
       if (!doc) {
@@ -37,7 +37,7 @@ export function login(req: Request, res: Response) {
         return;
       }
       const token = jwt.sign({
-        account: doc.account,
+        username: doc.username,
         role: doc.role,
       }, JWT_SECRET, {
         expiresIn: JWT_EXPIRE,
@@ -47,6 +47,7 @@ export function login(req: Request, res: Response) {
         httpOnly: true,
       });
       res.status(200).json({
+        status: 'success',
         message: 'Login successful',
       });
     });

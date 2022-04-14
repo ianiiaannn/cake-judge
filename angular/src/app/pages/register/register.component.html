@@ -1,1 +1,30 @@
-<p>register works!</p>
+<h1>Register</h1>
+<div class="card bg-danger text-white shadow" *ngIf="badRequest">
+  <div class="card-body">
+    Bad request.
+  </div>
+</div>
+<div class="card bg-danger text-white shadow" *ngIf="conflict">
+  <div class="card-body">
+    Account or email taken.
+  </div>
+</div>
+<form (ngSubmit)="login()" [formGroup]="form">
+  <div class="form-group">
+    <label for="username">Username: </label>
+    <input name="username" class="form-control" formControlName="username" required autocomplete="username">
+  </div>
+  <div class="form-group">
+    <label for="password">Password: </label>
+    <input type="password" name="password" class="form-control" formControlName="password" required autocomplete="new-password">
+  </div>
+  <div class="form-group">
+    <label for="displayName">Display name: </label>
+    <input name="displayName" class="form-control" formControlName="displayName" required autocomplete="username">
+  </div>
+  <div class="form-group">
+    <label for="email">email: </label>
+    <input type="email" name="email" class="form-control" formControlName="email" required autocomplete="email">
+  </div>
+  <button class="btn btn-primary" type="submit">Login</button>
+</form>
