@@ -88,31 +88,3 @@ export function register(req: Request, res: Response) {
         });
     });
 }
-/**
-  const array = req.body.username.replace(/[^0-9a-z]/gi, '');
-  if (array != '' && req.body.password != '') {
-    dbconn.collection('Users').findOne({ username: array }, (err, user) => {
-      if (err) console.log(err);
-      else if (user) {
-        req.session.handlerCode = 'failRegister';
-        res.redirect('/');
-      } else {
-        const salt = bcrypt.genSaltSync(SALT_WORK_FACTORY);
-        dbconn.collection('Users').insertOne({
-          username: array,
-          password: bcrypt.hashSync(req.body.password, salt),
-          salt: salt,
-          carbonLog: 0,
-        }, (err, user) => {
-          if (err) console.log(err);
-          else {
-            req.session.username = array;
-            req.session.handlerCode = 'successRegister';
-            console.log(user + ' register');
-            res.redirect('/');
-          }
-        });
-      }
-    });
-  };
-  */

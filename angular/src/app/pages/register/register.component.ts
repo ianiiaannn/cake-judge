@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -40,13 +40,13 @@ export class RegisterComponent implements OnInit {
       }).subscribe((res: HttpResponse<Object>) => {
         this.badRequest = false;
         this.conflict = false;
-        if (res.status == 201) {
+        if (res.status === HttpStatusCode.Created) {
           window.location.href = '/';
         }
-        if (res.status == 400) {
+        if (res.status === HttpStatusCode.BadRequest) {
           this.badRequest = true;
         }
-        if (res.status == 409) {
+        if (res.status === HttpStatusCode.Conflict) {
           this.conflict = true;
         }
       }

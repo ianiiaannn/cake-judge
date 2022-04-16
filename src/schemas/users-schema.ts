@@ -18,7 +18,7 @@ export interface Users {
   registerTime?: Date;
   registerIP?: string;
   lastLogin?: Date;
-  ipSet?: [string];
+  ipSet?: string[];
   userLanguage?: string;
   codeLanguage?: Language;
   ac?: number;
@@ -29,9 +29,9 @@ export interface Users {
   re?: number;
   ce?: number;
   se?: number;
-  acList?: [string];
-  triedList?: [string];
-  submit?: [Submit];
+  acList?: string[];
+  triedList?: string[];
+  submit?: Submit[];
   import?: { any: any };
 }
 

@@ -8,6 +8,7 @@ import express from 'express';
 import http from 'http';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { createClient } from 'redis';
 import { cppRoute } from './routes/cpp-route';
 import { notFound } from './routes/404';
@@ -16,6 +17,7 @@ import { problems } from './routes/problems';
 import { showProblem } from './routes/show-problem';
 import { register } from './routes/register';
 import { login } from './routes/login';
+import { userInfo } from './routes/user-info';
 
 dotenv.config();
 const app = express();
@@ -23,13 +25,16 @@ http.createServer(app);
 app.use(express.static('angular/dist'));
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/cppTestSubmit', cppRoute);
 app.get('/api/problems', problems);
+app.put('/api/problems');
 app.get('/api/showProblem', showProblem);
 app.post('/api/register', register);
 app.post('/api/login', login);
+app.get('/api/test/getUserInfo', userInfo);
 app.use('*', notFound); // If accpet html, send index.html or send json 404
 
 
