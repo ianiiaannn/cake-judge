@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -33,23 +33,26 @@ export class RegisterComponent implements OnInit {
   get displayName() { return this.form.get('displayName'); }
 
   login() {
-    this.http.post('/api/register', this.form.value,
-      {
-        observe: 'response',
-        responseType: 'json'
-      }).subscribe((res: HttpResponse<Object>) => {
-        this.badRequest = false;
-        this.conflict = false;
+    this.badRequest = false;
+    this.conflict = false;
+    this.http.post('/api/register', this.form.value, {
+      observe: 'response',
+      responseType: 'json'
+    }).subscribe({
+      next: (res: HttpResponse<Object>) => {
         if (res.status === HttpStatusCode.Created) {
           window.location.href = '/';
         }
-        if (res.status === HttpStatusCode.BadRequest) {
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === HttpStatusCode.BadRequest) {
           this.badRequest = true;
         }
-        if (res.status === HttpStatusCode.Conflict) {
+        if (err.status === HttpStatusCode.Conflict) {
           this.conflict = true;
         }
       }
-      );
+    }
+    );
   }
 }

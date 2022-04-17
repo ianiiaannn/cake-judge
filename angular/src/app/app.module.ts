@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { IndexComponent } from './pages/index/index.component';
-import { QuestionsComponent } from './pages/questions/questions.component';
 import { RouterModule } from '@angular/router';
 import { ProblemListComponent } from './pages/problem-list/problem-list.component';
 import { ProblemPageComponent } from './pages/problem-page/problem-page.component';
@@ -21,7 +20,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     SidebarComponent,
     IndexComponent,
-    QuestionsComponent,
     ProblemListComponent,
     ProblemPageComponent,
     PageNotFoundComponent,

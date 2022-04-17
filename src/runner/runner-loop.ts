@@ -5,7 +5,7 @@ import { Runner } from '../interfaces/runner-interface';
 
 const runnerQueue = new Bull('runner', 'redis://redis:6379');
 
-runnerQueue.process(async (job: any, done: any) => {
+runnerQueue.process(async (job: Bull.Job<any>) => {
   console.log(job.data);
   switch (job.data.runner.code.language) {
     case 'cpp': {

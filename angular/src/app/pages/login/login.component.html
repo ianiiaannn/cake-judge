@@ -1,7 +1,7 @@
 <h1>Login</h1>
 <div class="card bg-danger text-white shadow" *ngIf="wrongRequest">
   <div class="card-body">
-    Account or password is wrong!
+    Username or password is wrong!
   </div>
 </div>
 <form (ngSubmit)="login()" [formGroup]="form">

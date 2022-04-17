@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -32,15 +32,18 @@ export class LoginComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json'
-      }).subscribe((res: HttpResponse<Object>) => {
-        console.debug(res.body);
-        if (res.status == 200) {
-          window.location.href = '/';
+      }).subscribe({
+        next: (res: HttpResponse<any>) => {
+          if (res.status === 200) {
+            window.location.href = '/';
+            return;
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 401) {
+            this.wrongRequest = true;
+          }
         }
-        if (res.status == 401) {
-          this.wrongRequest = true;
-        }
-      }
-      );
+      });
   }
 }

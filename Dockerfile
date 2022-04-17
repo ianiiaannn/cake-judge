@@ -2,6 +2,7 @@ FROM node:lts
 
 RUN apt update
 RUN apt install -y build-essential python3-dev
+RUN mkdir /tmp/chroot
 
 WORKDIR /app/angular
 ADD ./angular/package.json /app/angular/package.json
