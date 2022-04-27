@@ -15,6 +15,7 @@ export async function cppRoute(req: Request, res: Response) {
     memoryLimit: 10000,
     timeLimit: 10,
     score: 50,
+    required: true,
   }, {
     // eslint-disable-next-line max-len
     input: ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'],
@@ -23,6 +24,7 @@ export async function cppRoute(req: Request, res: Response) {
     memoryLimit: 10000,
     timeLimit: 10,
     score: 50,
+    required: true,
   }];
   const code: Submit = {
     language: Language.Cpp,

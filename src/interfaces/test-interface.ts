@@ -7,4 +7,5 @@ export interface Test {
   timeLimit: number;
   memoryLimit: number;
   score: number;
+  required: boolean;
 }

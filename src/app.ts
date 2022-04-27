@@ -4,19 +4,21 @@ export const JWT_SECRET = 'secretttttttttttttttttttttttttTt';
 export const JWT_EXPIRE = '1d';
 export const uri: string = 'mongodb://mongo:27017/cake-judge';
 
-import express from 'express';
-import http from 'http';
-import helmet from 'helmet';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import express from 'express';
+import helmet from 'helmet';
+import http from 'http';
 import { createClient } from 'redis';
-import { cppRoute } from './routes/cpp-route';
-import { notFound } from './routes/404';
+
 import { dbInit } from './dbconn';
-import { problems } from './routes/problems';
-import { showProblem } from './routes/show-problem';
-import { register } from './routes/register';
+import { notFound } from './routes/404';
+import { cppRoute } from './routes/cpp-route';
 import { login } from './routes/login';
+import { problems } from './routes/problems';
+import { register } from './routes/register';
+import { showProblem } from './routes/show-problem';
+import { submitAns } from './routes/submit-ans';
 import { userInfo } from './routes/user-info';
 
 dotenv.config();
@@ -30,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/cppTestSubmit', cppRoute);
 app.get('/api/problems', problems);
-app.put('/api/problems');
+app.post('/api/problems/ans', submitAns);
 app.get('/api/showProblem', showProblem);
 app.post('/api/register', register);
 app.post('/api/login', login);

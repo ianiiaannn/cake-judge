@@ -1,5 +1,7 @@
-import { dbconn } from '../dbconn';
 import { Request, Response } from 'express';
+
+import { dbconn } from '../dbconn';
+
 /**
  * Problem page api.
  * @param {Express.Request} req request

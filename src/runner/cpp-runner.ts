@@ -1,54 +1,76 @@
-/* eslint-disable max-len */
-import fs from 'fs';
 import childProcess from 'child_process';
+import fs from 'fs';
 import os from 'os';
+
 import { CodeResult } from '../enums/code-result';
+import { Output } from '../interfaces/output-interface';
 import { Test } from '../interfaces/test-interface';
+import { watchDog } from './watchdog';
 
 /**
  * Test the input code. Note that the input code may execute shell injection.
  * @param {string} input the iputed code
  * @param {array} questions the questions to be tested
  */
-export async function testCpp(input: string | NodeJS.ArrayBufferView, questions: Test[]) {
+export async function testCpp(input: string, questions: Test[]) {
   try {
     fs.writeFileSync('/tmp/test.cpp', input);
-    childProcess.execSync('g++ -lstdc++ -o /tmp/test.run /tmp/test.cpp');
+    childProcess.execSync('g++ -lstdc++ -o /tmp/out.a /tmp/test.cpp');
   } catch (err) {
     console.log(err);
     return [CodeResult.CompileError, err];
   }
-  const resultList: string[] = [];
+  const resultList: Output[] = [];
   try {
-    questions.forEach(async (element: Test) => {
-      const resultByLine = [];
-      const runner = childProcess.spawnSync('/tmp/test.run', {
-        input: element.input.join('\n') + os.EOL,
-        encoding: 'utf-8',
+    questions.forEach((element) => {
+      let outputObj: Output = {
+        timeUseage: 0,
+        memoryUseage: 0,
+        status: CodeResult.SystemError,
+      };
+      const childStdout: string[] = [];
+      const runner = childProcess.spawn('/tmp/out.a', [], {
+        stdio: ['pipe', 'pipe'],
         timeout: element.timeLimit * 1000,
       });
-      let i = 0;
-      let output = runner.output[1];
-      if (output?.indexOf('\n') != -1) {
-        while (output) {
-          resultByLine[i] = output.substr(0, output.indexOf('\n'));
-          output = output.substr(output.indexOf('\n') + 1, output.length);
-          i++;
+      runner.stdin?.write(element.input.join('\n') + os.EOL);
+      runner.stdin?.end();
+      console.log('before');
+      console.log(runner.pid as number);
+      outputObj = watchDog(runner.pid as number, outputObj);
+      console.log('after');
+      runner.stdout?.on('data', async (data: string) => {
+        data.toString().split(os.EOL).forEach((line: string) => {
+          childStdout.push(line);
+        });
+      });
+      runner.on('close', (code, singal: NodeJS.Signals) => {
+        let pass = true;
+        let i = 0;
+        if (element.output.length && childStdout.length) {
+          if (childStdout[childStdout.length - 1] === '') {
+            childStdout.pop();
+          }
+          while (element.output.length >= i && childStdout.length >= i) {
+            if (element.output[i] !== childStdout[i]) {
+              pass = false;
+              break;
+            }
+            i++;
+          }
         }
-      } else resultByLine[0] = output;
-      let pass = true;
-      for (i = 0; i <= resultByLine.length - 1; i++) {
-        try {
-          if (resultByLine.length) resultByLine[i]?.trim();
-          if (element.output[i] != resultByLine[i]) pass = false;
-        } catch (err) {
-          pass = false;
-          console.error(err);
+        if (outputObj.status === CodeResult.SystemError) {
+          if (code !== 0) {
+            outputObj.status = CodeResult.TimeLimitExceeded;
+          } else if (pass) {
+            outputObj.status = CodeResult.Accepted;
+          } else {
+            outputObj.status = CodeResult.WrongAnswer;
+          }
         }
-      }
-      if (runner.signal) resultList.push(CodeResult.TimeLimitExceeded);
-      else if (pass) resultList.push(CodeResult.Accept);
-      else resultList.push(CodeResult.WrongAnswer);
+        console.log(outputObj);
+        resultList.push(outputObj);
+      });
     });
   } catch (err) {
     console.error(err);

@@ -2,6 +2,7 @@ import monogoose from 'mongoose';
 import { uri } from './app';
 import { problemSubmitTest } from './routes/problem-submit-test';
 import { ProblemsSchema } from './schemas/problems-schema';
+import { ScoreSchema } from './schemas/score-schema';
 import { UsersSchema } from './schemas/users-schema';
 
 export const dbconn = monogoose.createConnection(uri);
@@ -12,6 +13,7 @@ export const dbconn = monogoose.createConnection(uri);
 export function dbInit() {
   dbconn.model('Users', UsersSchema);
   dbconn.model('Problems', ProblemsSchema);
+  dbconn.model('Scores', ScoreSchema);
   dbconn.on('error', (error: any) => {
     console.log('Unable to connect to the database.');
     console.error(error);

@@ -22,10 +22,7 @@ export class ProblemPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      problemid: ['', Validators.required],
-      code: ['', Validators.required],
-    });
+
     this.route.queryParams.subscribe(params => {
       this.http.get('/api/showProblem?name=' + params['problemid'],
         {
@@ -34,7 +31,12 @@ export class ProblemPageComponent implements OnInit {
         }).subscribe({
           next: (res: HttpResponse<any>) => {
             this.problem = res.body;
-            this.problemid?.setValue(this.problem.id);
+            this.problem.problemid = res.body.name;
+            this.form = this.fb.group({
+              problemid: [params['problemid'], Validators.required],
+              code: ['', Validators.required],
+              language: ['cpp', Validators.required],
+            });
             this.pageReady = true;
           },
           error: (err: HttpErrorResponse) => {
@@ -47,17 +49,23 @@ export class ProblemPageComponent implements OnInit {
 
   get problemid() { return this.form.get('problemid'); }
   get code() { return this.form.get('code'); }
+  get language() { return this.form.get('language'); }
 
   submit() {
-    this.http.post('/api/submit', this.form.value, {
+    console.log(this.form.value);
+    this.http.post('/api/problems/ans', this.form.value, {
       observe: 'response',
       responseType: 'json'
     }).subscribe({
       next: (res: HttpResponse<any>) => {
-        if (res.status === 200) {
+        console.log(this.form.value)
+        if (res.status === 201) {
           window.location.href = '/Submissions';
           return;
         }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
       }
     });
   }

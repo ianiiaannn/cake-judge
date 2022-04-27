@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "userid": 1,
+  "vclassid": 0,
+  "pid": 1,
+  "language": "C",
+  "timeusage": 0,
+  "memoryusage":80,
+  "exefilesize":-1,
+  "code":"#include<stdio.h>\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\nreturn 0;\r\n}\n",
+  "codelength":125,
+  "judgement":1,
+  "codelocker":1,
+  "contestid":0,
+  "score":100,
+  "details":"",
+  "serveroutputs":"[{\"reason\":\"Server.REASON.AC\",\"info\":\"\",\"solutionid\":1,\"judgement\":\"AC\",\"account\":\"\",\"servername\":\"ZeroJudgeServer\",\"session_account\":\"\",\"problemid\":\"a001\",\"score\":20,\"summary\":\"0ms, 76KB\",\"exefilesize\":0,\"hint\":\"\",\"timeusage\":0,\"memoryusage\":76,\"isWaiting\":false,\"isAccept\":true,\"debug\":\"\"},{\"reason\":\"Server.REASON.AC\",\"info\":\"\",\"solutionid\":1,\"judgement\":\"AC\",\"account\":\"\",\"servername\":\"ZeroJudgeServer\",\"session_account\":\"\",\"problemid\":\"a001\",\"score\":80,\"summary\":\"0ms, 80KB\",\"exefilesize\":0,\"hint\":\"\",\"timeusage\":0,\"memoryusage\":80,\"isWaiting\":false,\"isAccept\":true,\"debug\":\"\"}]",
+  "ipfrom": "[127.0.0.1]",
+  "submittime": 1571519700000,
+  "visible": 1
+}

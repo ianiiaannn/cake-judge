@@ -1,7 +1,6 @@
 import { Schema } from 'mongoose';
 import { Language } from '../enums/languages';
 import { Roles } from '../enums/roles';
-import { Submit } from '../interfaces/submit-interface';
 
 export interface Users {
   username: string;// login name
@@ -31,7 +30,7 @@ export interface Users {
   se?: number;
   acList?: string[];
   triedList?: string[];
-  submit?: Submit[];
+  // submit?: Submit[];
   import?: { any: any };
 }
 

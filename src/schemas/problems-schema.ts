@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 import { Submit } from '../interfaces/submit-interface';
 import { Test } from '../interfaces/test-interface';
 
-interface Problems {
+export interface Problems {
   name: string; // name in url, from problem id
   title: string;
   owner_ID: string;
@@ -15,13 +15,13 @@ interface Problems {
   sampleCode: Submit;
   comment?: string; // ???
   judgeMode: string; // need an enum?
-  test: [Test];
+  test: Test[];
   difficulty: number; // need an enum?
   submitSum: number;// How many account tried
   clickSum: number;
   acSum: number;
-  reference?: [string];
-  tags?: [string];
+  reference?: string[];
+  tags?: string[];
   dispaly: boolean;
   problemSettings?: {
     waVisable: boolean; // User will get the output.
