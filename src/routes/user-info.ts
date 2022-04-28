@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../app';
 
 /**
- * Vaild jwt.
+ * Valid jwt.
  * @param {Express.Request} req request
  * @param {Express.Response} res response
  */

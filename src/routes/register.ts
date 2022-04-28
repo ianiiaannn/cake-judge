@@ -11,7 +11,7 @@ import jwt from 'jsonwebtoken';
 /**
  * register route
  * @param {Express.Request} req request
- * @param {Express.Response} res resonse
+ * @param {Express.Response} res response
  */
 export function register(req: Request, res: Response) {
   const { username, password, email, displayName } = req.body;

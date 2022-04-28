@@ -28,7 +28,7 @@
     <form (ngSubmit)="submit()" [formGroup]="form">
       <input hidden value="cpp" formControlName="language" name="language">
       <input hidden name="problemid" formControlName="problemid" [value]="problem.name">
-      <textarea name="code" formControlName="code" class="form-control"></textarea>
+      <textarea name="code" formControlName="code" class="form-control" id="editor"></textarea>
       <button class="btn btn-primary" type="submit">Submit</button>
     </form>
   </div>

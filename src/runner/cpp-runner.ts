@@ -9,7 +9,7 @@ import { watchDog } from './watchdog';
 
 /**
  * Test the input code. Note that the input code may execute shell injection.
- * @param {string} input the iputed code
+ * @param {string} input the input code
  * @param {array} questions the questions to be tested
  */
 export async function testCpp(input: string, questions: Test[]) {
@@ -24,8 +24,8 @@ export async function testCpp(input: string, questions: Test[]) {
   try {
     questions.forEach((element) => {
       let outputObj: Output = {
-        timeUseage: 0,
-        memoryUseage: 0,
+        timeUsage: 0,
+        memoryUsage: 0,
         status: CodeResult.SystemError,
       };
       const childStdout: string[] = [];
@@ -44,7 +44,7 @@ export async function testCpp(input: string, questions: Test[]) {
           childStdout.push(line);
         });
       });
-      runner.on('close', (code, singal: NodeJS.Signals) => {
+      runner.on('close', (code, signal: NodeJS.Signals) => {
         let pass = true;
         let i = 0;
         if (element.output.length && childStdout.length) {

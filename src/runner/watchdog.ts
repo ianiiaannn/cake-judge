@@ -15,11 +15,11 @@ export function watchDog(pid: number, outputObj: Output) {
     if (err) {
       return outputObj;
     }
-    if (docs.memory > outputObj.memoryUseage) {
-      outputObj.memoryUseage = docs.memory;
+    if (docs.memory > outputObj.memoryUsage) {
+      outputObj.memoryUsage = docs.memory;
     }
-    if (docs.elapsed > outputObj.timeUseage) {
-      outputObj.timeUseage = docs.elapsed;
+    if (docs.elapsed > outputObj.timeUsage) {
+      outputObj.timeUsage = docs.elapsed;
     }
     setTimeout(watchDog, 10);
   });

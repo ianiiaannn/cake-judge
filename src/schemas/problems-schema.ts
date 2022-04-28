@@ -5,13 +5,13 @@ import { Test } from '../interfaces/test-interface';
 export interface Problems {
   name: string; // name in url, from problem id
   title: string;
-  owner_ID: string;
+  owner_ID: string|undefined;
   content?: string;
   theInput?: string;
   theOutput?: string;
   sampleInput?: string;
-  sampeOutput?: string;
-  hint?: string;
+  sampleOutput?: string;
+  hint?: string|undefined;
   sampleCode: Submit;
   comment?: string; // ???
   judgeMode: string; // need an enum?
@@ -22,9 +22,9 @@ export interface Problems {
   acSum: number;
   reference?: string[];
   tags?: string[];
-  dispaly: boolean;
+  display: boolean;
   problemSettings?: {
-    waVisable: boolean; // User will get the output.
+    waVisible: boolean; // User will get the output.
   };
 }
 

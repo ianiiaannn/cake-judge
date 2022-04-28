@@ -9,7 +9,7 @@ import { Test } from '../interfaces/test-interface';
  * @param {any} res response
  */
 export async function cppRoute(req: Request, res: Response) {
-  const testQustions: Test[] = [{
+  const testQuestions: Test[] = [{
     input: ['world\nnode'],
     output: ['hello, world', 'hello, node'],
     memoryLimit: 10000,
@@ -30,7 +30,7 @@ export async function cppRoute(req: Request, res: Response) {
     language: Language.Cpp,
     code: req.body.cpp,
   };
-  const result = pushJob({ code: code, questions: testQustions });
+  const result = pushJob({ code: code, questions: testQuestions });
   console.log(result);
   res.send(result);
 }

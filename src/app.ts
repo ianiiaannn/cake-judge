@@ -37,7 +37,7 @@ app.get('/api/showProblem', showProblem);
 app.post('/api/register', register);
 app.post('/api/login', login);
 app.get('/api/test/getUserInfo', userInfo);
-app.use('*', notFound); // If accpet html, send index.html or send json 404
+app.use('*', notFound); // If accept html, send index.html or send json 404
 
 
 app.listen(process.env.PORT, async () => {
