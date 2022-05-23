@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { JWT_SECRET } from '../app';
-import { dbconn } from '../dbconn';
+import { dbConnection } from '../db-connection';
 import { pushJob } from '../runner/runner-loop';
 import { Problems } from '../schemas/problems-schema';
 
 /**
  * process answer form user.
  * @param {Express.Request} req request
- * @param {Express.Response} res reponse
+ * @param {Express.Response} res response
  */
 export function submitAns(req: Request, res: Response) {
   const { token } = req.cookies;
@@ -21,7 +21,7 @@ export function submitAns(req: Request, res: Response) {
     });
     return;
   }
-  dbconn.collection('Problems').findOne({ name: problemid })
+  dbConnection.collection('Problems').findOne({ name: problemid })
     .then((doc: any) => {
       const problem = doc as Problems;
       if (!problem) {
@@ -36,9 +36,14 @@ export function submitAns(req: Request, res: Response) {
           return;
         }
         res.status(201).json({});
+        dbConnection.collection('Problems').updateOne(
+          { name: problemid },
+          { $inc: { submitSum: 1 } },
+        );
         pushJob({
           code: { language: language, code: code },
           questions: problem.test,
+          user: decoded.username,
         });
       });
     });

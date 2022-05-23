@@ -1,12 +1,13 @@
-/* eslint-disable indent */
-import { dbconn } from '../dbconn';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { COOKIE_AGE, JWT_EXPIRE, JWT_SECRET, SALT_WORK_FACTORY } from '../app';
-import { Users } from '../schemas/users-schema';
-import { Roles } from '../enums/roles';
-import { Language } from '../enums/languages';
 import jwt from 'jsonwebtoken';
+
+import { COOKIE_AGE, JWT_EXPIRE, JWT_SECRET, SALT_WORK_FACTORY } from '../app';
+/* eslint-disable indent */
+import { dbConnection } from '../db-connection';
+import { Language } from '../enums/languages';
+import { Roles } from '../enums/roles';
+import { Users } from '../schemas/users-schema';
 
 /**
  * register route
@@ -23,7 +24,7 @@ export function register(req: Request, res: Response) {
     });
     return;
   }
-  dbconn.collection('Users').findOne({
+  dbConnection.collection('Users').findOne({
     $or: [{ username: username }, { email: email }],
     })
     .then((doc: any) => {
@@ -65,7 +66,7 @@ export function register(req: Request, res: Response) {
         ce: 0,
         se: 0,
       };
-      dbconn.collection('Users').insertOne(user)
+      dbConnection.collection('Users').insertOne(user)
         .then(() => {
           const token= jwt.sign({
             username: user.username,

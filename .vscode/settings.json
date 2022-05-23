@@ -63,5 +63,11 @@
     "angular/typings": true,
     "angular/**/.DS_Store": true,
     "angular/**/Thumbs.db": true
-  }
+  },
+  "cSpell.words": [
+    "lstdc",
+    "monogoose",
+    "pidusage",
+    "problemid"
+  ]
 }

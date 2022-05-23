@@ -1,9 +1,11 @@
-/* eslint-disable indent */
-import { dbconn } from '../dbconn';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+
 import { COOKIE_AGE, JWT_EXPIRE, JWT_SECRET } from '../app';
+/* eslint-disable indent */
+import { dbConnection } from '../db-connection';
+
 /**
  * Login route. Queue database and send jwt token.
  * @param {Express.Request} req request
@@ -18,7 +20,7 @@ export function login(req: Request, res: Response) {
     });
     return;
   }
-  dbconn.collection('Users').findOne({
+  dbConnection.collection('Users').findOne({
     $or: [{ username: username }],
   })
     .then((doc: any) => {

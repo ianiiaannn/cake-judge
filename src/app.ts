@@ -11,13 +11,12 @@ import helmet from 'helmet';
 import http from 'http';
 import { createClient } from 'redis';
 
-import { dbInit } from './dbconn';
+import { dbInit } from './db-connection';
 import { notFound } from './routes/404';
-import { cppRoute } from './routes/cpp-route';
 import { login } from './routes/login';
-import { problems } from './routes/problems';
+import { problemList } from './routes/problem-list';
+import { showProblem } from './routes/problem-page';
 import { register } from './routes/register';
-import { showProblem } from './routes/show-problem';
 import { submitAns } from './routes/submit-ans';
 import { userInfo } from './routes/user-info';
 
@@ -30,10 +29,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/cppTestSubmit', cppRoute);
-app.get('/api/problems', problems);
-app.post('/api/problems/ans', submitAns);
-app.get('/api/showProblem', showProblem);
+app.get('/api/problems', problemList); // list problems
+app.post('/api/problems/ans', submitAns); // user submit answer
+app.get('/api/showProblem', showProblem); // show problem page
 app.post('/api/register', register);
 app.post('/api/login', login);
 app.get('/api/test/getUserInfo', userInfo);

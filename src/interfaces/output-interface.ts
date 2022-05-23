@@ -4,4 +4,5 @@ export interface Output{
   status: CodeResult;
   memoryUsage: number;
   timeUsage: number;
+  outputDiff?: string;
 }
