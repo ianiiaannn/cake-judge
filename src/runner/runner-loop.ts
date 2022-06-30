@@ -13,10 +13,9 @@ const runnerQueue = new Bull('runner', 'redis://redis:6379');
 runnerQueue.process(async (job: Bull.Job<any>, done) => {
   switch (job.data.runner.code.language) {
     case Language.Cpp: {
-      testCpp(job.data.runner.code.code, job.data.runner.questions).then((result) => {
-        console.log(`bull got result: ${result}`);
-        done(null, result);
-      });
+      const result: Output[] = await testCpp(job.data.runner.code.code, job.data.runner.questions);
+      console.log(`bull got result: ${result}`);
+      done(null, result);
     }
   }
 });
@@ -28,7 +27,7 @@ runnerQueue.process(async (job: Bull.Job<any>, done) => {
 export async function pushJob(runner: Runner) {
   const job = await runnerQueue.add({ runner });
   job.finished().then((output: any) => {
-    console.log(output);
+    console.log(`pushJob function got: ${output}`);
     /* if (output.length) {
       const score: Score = {
         submit: runner.code,
