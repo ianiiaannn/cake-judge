@@ -13,7 +13,12 @@ const runnerQueue = new Bull('runner', 'redis://redis:6379');
 runnerQueue.process(async (job: Bull.Job<any>, done) => {
   switch (job.data.runner.code.language) {
     case Language.Cpp: {
-      const result: Output[] = await testCpp(job.data.runner.code.code, job.data.runner.questions);
+      let result: Output[] = [];
+      result = await testCpp(
+        job.data.runner.code.code,
+        job.data.runner.questions
+      );
+
       console.log(`bull got result: ${result}`);
       done(null, result);
     }

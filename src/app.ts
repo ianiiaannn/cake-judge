@@ -24,10 +24,12 @@ import { userInfo } from './routes/user-info';
 dotenv.config();
 const app = express();
 http.createServer(app);
-app.use(rateLimit({
-  windowMs: 60 * 1000,
-  max: 100,
-}));
+app.use(
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 1000,
+  })
+);
 app.use(express.static('angular/dist'));
 app.use(express.json());
 app.use(cookieParser());
@@ -46,7 +48,6 @@ app.post('/api/problems/ans', submitAns); // user submit answer
 app.get('/api/test/getUserInfo', userInfo);
 // 404 page.
 app.use('*', frontEndOr404); // If accept html, send index.html or send json 404
-
 
 app.listen(process.env.PORT, async () => {
   console.log('Server stated on port ' + process.env.PORT + '.');

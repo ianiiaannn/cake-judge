@@ -12,7 +12,7 @@ import { watchDog } from './watchdog';
  * Test the input code. Note that the input code may execute shell injection.
  * @param {string} input the input code
  * @param {array} questions the questions to be tested
- * @return {Promise<Output[]>} output
+ * @return {Promise<Output[]>} promise of output
  */
 export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
   return new Promise((resolve) => {
@@ -43,9 +43,12 @@ export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
           console.log(runner.pid as number);
           outputObj = watchDog(runner.pid as number, outputObj);
           runner.stdout?.on('data', (data: string) => {
-            data.toString().split(os.EOL).forEach((line: string) => {
-              childStdout.push(line);
-            });
+            data
+              .toString()
+              .split(os.EOL)
+              .forEach((line: string) => {
+                childStdout.push(line);
+              });
           });
           runner.on('close', (code, signal: NodeJS.Signals) => {
             let pass = true;
@@ -63,15 +66,28 @@ export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
               }
             }
             if (outputObj.status === CodeResult.SystemError) {
-              if (signal === 'SIGSEGV' || signal === 'SIGBUS' || signal === 'SIGFPE') {
+              if (
+                signal === 'SIGSEGV' ||
+                signal === 'SIGBUS' ||
+                signal === 'SIGFPE'
+              ) {
                 outputObj.status = CodeResult.RuntimeError;
-              } else if (code !== 0 || element.timeLimit < outputObj.timeUsage) {
+              } else if (
+                code !== 0 ||
+                element.timeLimit < outputObj.timeUsage
+              ) {
                 outputObj.status = CodeResult.TimeLimitExceeded;
               } else if (pass) {
                 outputObj.status = CodeResult.Accepted;
               } else {
                 outputObj.status = CodeResult.WrongAnswer;
-                outputObj.outputDiff = diff.diffWordsWithSpace(element.output.join('\n'), childStdout.join('\n')).toString().slice(0, 50);
+                outputObj.outputDiff = diff
+                  .diffWordsWithSpace(
+                    element.output.join('\n'),
+                    childStdout.join('\n')
+                  )
+                  .toString()
+                  .slice(0, 50);
               }
             }
             resultList.push(outputObj);
@@ -80,9 +96,6 @@ export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
       });
     } catch (err) {
       console.error(err);
-    } finally {
-      console.log('done.');
-      resolve(resultList);
     }
     const timerId = setInterval(() => {
       if (resultList.length === questions.length) {
@@ -91,6 +104,5 @@ export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
         resolve(resultList);
       }
     }, 10);
-    resolve(resultList);
   });
 }

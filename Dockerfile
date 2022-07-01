@@ -1,8 +1,16 @@
 FROM node:lts
 
 RUN apt update
-RUN apt install -y build-essential python3-dev
+RUN apt install -y build-essential python3-dev \
+  libtool autoconf bison flex make python-protobuf python-numpy protobuf-compiler libprotobuf-dev libftdi-dev libftdi1 uuid-dev libcppunit-dev libmicrohttpd-dev libprotobuf-dev libprotoc-dev zlib1g-dev libusb-1.0-0-dev liblo-dev libavahi-client-dev \
+  # https://groups.google.com/g/open-lighting/c/gt-iuxiwWRU ^
+  libnl-3-dev libnl-route-3-dev
 RUN mkdir /tmp/chroot
+RUN ln -s /usr/include/libnl3/netlink /usr/include/netlink 
+
+WORKDIR /app/nsjail
+ADD ./nsjail .
+RUN make
 
 WORKDIR /app/angular
 ADD ./angular/package.json /app/angular/package.json
