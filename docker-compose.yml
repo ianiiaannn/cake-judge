@@ -11,6 +11,7 @@ services:
     depends_on:
       - mongo
       - redis
+    privileged: true
   mongo:
     image: mongo
     volumes:
