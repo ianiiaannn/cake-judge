@@ -52,7 +52,7 @@ app.use('*', frontEndOr404); // If accept html, send index.html or send json 404
 app.listen(process.env.PORT, async () => {
   console.log('Server stated on port ' + process.env.PORT + '.');
   dbInit();
-  const client = createClient({ url: 'redis://redis:6379' });
+  const client = createClient({ url: 'redis://redis:6379' }); // Check redis server health.
   client.on('error', (error: any) => {
     console.log('Unable to connect to redis');
     console.error(error);

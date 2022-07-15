@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+
 import { Submit } from '../interfaces/submit-interface';
 import { Test } from '../interfaces/test-interface';
 
@@ -16,6 +17,7 @@ export interface Problems {
   comment?: string; // ???
   judgeMode: string; // need an enum?
   test: Test[];
+  requireScore: number|100;
   difficulty: number; // need an enum?
   submitSum: number;// How many account tried
   clickSum: number;

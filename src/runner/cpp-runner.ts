@@ -14,7 +14,7 @@ import { watchDog } from './watchdog';
  * @param {array} questions the questions to be tested
  * @return {Promise<Output[]>} promise of output
  */
-export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
+export function cppTestRunner(input: string, questions: Test[]): Promise<Output[]> {
   return new Promise((resolve) => {
     const resultList: Output[] = [];
     try {
@@ -84,7 +84,7 @@ export function testCpp(input: string, questions: Test[]): Promise<Output[]> {
                 outputObj.outputDiff = diff
                   .diffWordsWithSpace(
                     element.output.join('\n'),
-                    childStdout.join('\n')
+                    childStdout.join('\n'),
                   )
                   .toString()
                   .slice(0, 50);

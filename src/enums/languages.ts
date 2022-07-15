@@ -2,5 +2,5 @@
 export enum Language{
   Cpp='cpp',
   C='c',
-  Pytohn='python',
+  Python='python',
 }

@@ -1,11 +1,13 @@
-import { Schema } from 'mongoose';
+import { ObjectId, Schema } from 'mongoose';
+
 import { CodeResult } from '../enums/code-result';
 import { Output } from '../interfaces/output-interface';
 import { Submit } from '../interfaces/submit-interface';
 
 export interface Score{
+  problemID: ObjectId;
+  userID: ObjectId;
   submit: Submit;
-  score: number;
   output: Output[],
   finalScore: number;
   finalStatus: CodeResult;

@@ -43,7 +43,8 @@ export function submitAns(req: Request, res: Response) {
         pushJob({
           code: { language: language, code: code },
           questions: problem.test,
-          user: decoded.username,
+          userID: decoded.id,
+          problemId: doc._id,
         });
       });
     });

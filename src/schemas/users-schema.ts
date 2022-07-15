@@ -1,4 +1,5 @@
-import { Schema } from 'mongoose';
+import { ObjectId, Schema } from 'mongoose';
+
 import { Language } from '../enums/languages';
 import { Roles } from '../enums/roles';
 
@@ -30,7 +31,7 @@ export interface Users {
   se?: number;
   acList?: string[];
   triedList?: string[];
-  // submit?: Submit[];
+  submitList?: ObjectId[];
   import?: { any: any };
 }
 
